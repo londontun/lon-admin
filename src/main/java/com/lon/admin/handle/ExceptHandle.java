@@ -5,10 +5,12 @@ import com.lon.admin.model.R;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -42,7 +44,7 @@ public class ExceptHandle {
                                                        HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
-        return R.failure(e.getMessage());
+        return R.failure(String.format("不支持的请求方法[%s]", e.getMethod()));
     }
 
     /**
@@ -56,6 +58,16 @@ public class ExceptHandle {
     }
 
     /**
+     * 缺少权限
+     */
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public R<Void> handleAuthorizationDeniedException(AuthorizationDeniedException e, HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        log.error("缺少权限'{}',发生系统异常.", requestURI, e);
+        return R.failure(403, "缺少权限");
+    }
+
+    /**
      * 请求参数类型不匹配
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -63,6 +75,16 @@ public class ExceptHandle {
         String requestURI = request.getRequestURI();
         log.error("请求参数类型不匹配'{}',发生系统异常.", requestURI, e);
         return R.failure(String.format("请求参数类型不匹配，参数[%s]要求类型为：'%s'，但输入值为：'%s'", e.getName(), Objects.requireNonNull(e.getRequiredType()).getName(), e.getValue()));
+    }
+
+    /**
+     * 缺少请求参数
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public R<Void> handleMissingServletRequestParameterException(MissingServletRequestParameterException e, HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        log.error("缺少请求参数'{}',发生系统异常.", requestURI, e);
+        return R.failure(String.format("请求参数[%s]为空", e.getParameterName()));
     }
 
     /**

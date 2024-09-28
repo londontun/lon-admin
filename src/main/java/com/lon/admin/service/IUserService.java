@@ -75,4 +75,9 @@ public interface IUserService extends IService<User> {
      * @return 是否存在
      */
     boolean isExist(String username);
+
+    /**
+     * 根据用户名查询用户
+     */
+    User loadUserByUsername(String username);
 }

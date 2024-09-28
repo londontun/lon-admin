@@ -8,10 +8,18 @@ import org.junit.jupiter.api.Test;
 public class EncryptionUtilTests {
 
     @Test
-    void test() {
+    void testEncryptionUtil() {
         String password = "123456";
         String salt = EncryptionUtil.generateSalt();
         String encrypt = EncryptionUtil.encrypt(password, salt);
         assert EncryptionUtil.matches(password, salt, encrypt);
+    }
+
+    @Test
+    void testSecurityEnc() {
+        String password = "123456";
+        String salt = EncryptionUtil.generateSalt();
+        String encrypt = EncryptionUtil.encrypt(password, salt);
+        assert !EncryptionUtil.matches(password, salt, encrypt);
     }
 }

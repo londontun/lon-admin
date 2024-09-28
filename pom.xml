@@ -14,7 +14,7 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>3.2.8</spring-boot.version>
+        <spring-boot.version>3.3.3</spring-boot.version>
         <mybatis-plus-version>3.5.7</mybatis-plus-version>
         <hutool-all-version>5.8.25</hutool-all-version>
         <knife4j-version>4.4.0</knife4j-version>
@@ -72,9 +72,15 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
+        <!-- redis https://redis.io/ -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!-- spring-security https://spring.io/guides/gs/securing-web/ -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
     </dependencies>
 

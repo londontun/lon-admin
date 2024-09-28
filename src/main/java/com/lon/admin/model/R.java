@@ -20,6 +20,13 @@ public class R<T> {
         return r;
     }
 
+    public static <T> R<T> ok(String msg) {
+        R<T> r = new R<>();
+        r.setCode(200);
+        r.setMsg(msg);
+        return r;
+    }
+
     public static <T> R<T> ok() {
         R<T> r = new R<>();
         r.setCode(200);

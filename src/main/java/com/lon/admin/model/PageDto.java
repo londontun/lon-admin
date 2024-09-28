@@ -13,9 +13,9 @@ public class PageDto {
 
     @NotNull(message = "页数不能为空")
     @Schema(description = "第几页", requiredMode = Schema.RequiredMode.REQUIRED, defaultValue = "1")
-    private int pageNum;
+    private int current;
 
     @NotNull(message = "每页条数不能为空")
     @Schema(description = "每页条数", requiredMode = Schema.RequiredMode.REQUIRED, defaultValue = "10")
-    private int pageSize;
+    private int size;
 }

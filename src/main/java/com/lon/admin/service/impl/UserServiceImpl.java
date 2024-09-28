@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lon.admin.utils.EncryptionUtil;
 import com.lon.admin.enums.UserStatusEnum;
 import com.lon.admin.exception.CommonException;
 import com.lon.admin.mapper.UserMapper;
@@ -17,6 +16,8 @@ import com.lon.admin.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -63,8 +64,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public Page<UserVo> queryUserList(QueryUserRequest request) {
-        long current = request.getPageNum();
-        long size = request.getPageSize();
+        long current = request.getCurrent();
+        long size = request.getSize();
         Page<User> userPage = page(new Page<>(current, size), getQueryWrapper(request));
         Page<UserVo> userVoPage = new Page<>(current, size, userPage.getTotal());
         List<UserVo> userVO = getUserVo(userPage.getRecords());
@@ -98,10 +99,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         User user = new User();
         BeanUtils.copyProperties(request, user);
-        // 用户密码加盐加密
-        String salt = EncryptionUtil.generateSalt();
-        user.setSalt(salt);
-        user.setPassword(EncryptionUtil.encrypt(request.getPassword(), salt));
+        // 创建 BCryptPasswordEncoder 实例
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodePwd = passwordEncoder.encode(request.getPassword());
+        user.setPassword(encodePwd);
         save(user);
     }
 
@@ -118,5 +119,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public boolean isExist(String username) {
         return query().eq("username", username).exists();
+    }
+
+    @Override
+    public User loadUserByUsername(String username) {
+        return query().eq("username", username).one();
     }
 }
