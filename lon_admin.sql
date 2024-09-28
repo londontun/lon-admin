@@ -46,8 +46,7 @@ CREATE TABLE `t_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `nick_name` varchar(16) NOT NULL COMMENT '昵称',
   `username` varchar(16) NOT NULL COMMENT '用户名',
-  `password` varchar(64) NOT NULL COMMENT '密码',
-  `salt` varchar(64) NOT NULL COMMENT '盐',
+  `password` varchar(128) NOT NULL COMMENT '密码',
   `mobile` varchar(16) DEFAULT NULL COMMENT '电话',
   `email` varchar(64) DEFAULT NULL COMMENT '邮箱',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态 0启用 1禁用',
@@ -61,9 +60,7 @@ CREATE TABLE `t_user` (
 -- Records of t_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_user` (`id`, `nick_name`, `username`, `password`, `salt`, `mobile`, `email`, `status`, `create_time`, `update_time`) VALUES (1, 'superadmin', 'superadmin', '$2a$10$S2EqJJWn3vhdzG3G.4wzXO2TseZDmvOS4z3arIsV1PNPITe1WFXjO', 'JTOTT6id4S5qcE7l', '', '', 0, '2024-08-24 21:52:59', '2024-08-24 21:52:59');
-INSERT INTO `t_user` (`id`, `nick_name`, `username`, `password`, `salt`, `mobile`, `email`, `status`, `create_time`, `update_time`) VALUES (2, 'rbw123', 'rbw123', '$2a$10$ZQZ6gPC8.xAq.ZHhtnMFue/hVSGFLK04v.O8.oqsIlDYgglJB9xIG', 'NP2oBQkhIp8VjIqx', '2', '1', 1, '2024-08-24 22:12:05', '2024-08-24 22:12:05');
-INSERT INTO `t_user` (`id`, `nick_name`, `username`, `password`, `salt`, `mobile`, `email`, `status`, `create_time`, `update_time`) VALUES (3, 'qweqwe', 'qweqwe', '$2a$10$LJrioWTKZQd4F19XHzTBaOT.83EbnRa9cWeFRMwERoSgcOwe9V0Fq', 'X0BcW5lGmMmgHpnY', '2', '1', 0, '2024-08-24 22:12:15', '2024-08-24 22:12:15');
+INSERT INTO `t_user` (`id`, `nick_name`, `username`, `password`, `mobile`, `email`, `status`, `create_time`, `update_time`) VALUES (1, 'superadmin', 'superadmin', '$2a$10$4ilU/ZLhpR8MY7a9sePUSuojTGt3rEnOXKH0Jm2qBd3/CHOr3SeJm', '', '', 0, '2024-08-24 21:52:59', '2024-08-24 21:52:59');
 COMMIT;
 
 -- ----------------------------
